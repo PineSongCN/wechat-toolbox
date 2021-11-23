@@ -37,6 +37,7 @@ export default {
     padding: 20px;
 
     text-align: center;
+    font-size: 16px;
     &::after {
         content:' ';
         position: absolute;

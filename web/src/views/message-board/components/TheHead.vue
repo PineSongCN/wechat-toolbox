@@ -1,9 +1,7 @@
 <template>
     <div class="message-board-head">
         <img :src="require('@/assets/message-board/logo.jpg')" class="img" />
-        <div class="label">
-            念念不忘，必有回响。
-        </div>
+        <div class="label">念念不忘，必有回响。</div>
     </div>
 </template>
 
@@ -23,11 +21,14 @@ export default {
     display: flex;
     align-items: center;
     .img {
-        width: 100rem;
-        height: 100rem;
+        // font-size: 0.265vw;
+        width: 100px;
+        height: 100px;
+        // width: 2.65vw;
+        // height: 26.5vw;
         display: block;
         border-radius: 50%;
-        margin-right: 35rem;
+        margin-right: 35px;
     }
 }
 </style>
