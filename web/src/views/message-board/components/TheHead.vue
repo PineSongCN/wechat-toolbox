@@ -23,11 +23,11 @@ export default {
     display: flex;
     align-items: center;
     .img {
-        width: 10rem;
-        height: 10rem;
+        width: 100rem;
+        height: 100rem;
         display: block;
         border-radius: 50%;
-        margin-right: 3.5rem;
+        margin-right: 35rem;
     }
 }
 </style>

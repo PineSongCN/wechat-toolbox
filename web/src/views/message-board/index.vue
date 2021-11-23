@@ -61,7 +61,7 @@ export default {
 
     .link {
         .button {
-            width: 26rem;
+            width: 260rem;
         }
         + .link {
             margin-left: 0;

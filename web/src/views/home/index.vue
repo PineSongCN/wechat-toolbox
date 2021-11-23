@@ -2,19 +2,16 @@
     <div class="page-home">
         <TheHead />
         <div class="main">
-            <el-button class="button" type="primary" size="large">看留言</el-button>
-            <el-button class="button" type="primary" size="large">写留言</el-button>
         </div>
     </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import TheHead from './components/TheHead.vue';
 
 export default {
     name: 'Home',
-    components: {TheHead },
+    components: { },
     data() {
         return {
         };
