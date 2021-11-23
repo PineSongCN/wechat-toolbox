@@ -1,0 +1,10 @@
+/.idea
+/.vscode
+/runtime
+.DS_Store
+#/vendor
+*.log
+#thinkphp
+.env
+composer.lock
+node_modules
