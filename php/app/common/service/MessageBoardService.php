@@ -53,7 +53,7 @@ class MessageBoardService extends BaseService
             ->order($order)
             ->limit($pageSize)
             ->page($pageNo)
-            ->field(['mb.*'])
+            ->field(['mb.message_board_id','mb.from','mb.to','mb.content','mb.create_time'])
             ->select()
             ->toArray();
             foreach ($model as &$v) {
