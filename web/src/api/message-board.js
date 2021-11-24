@@ -13,6 +13,7 @@ export function write(data = {}) {
 
 export function read(data = {}) {
     data.isName = isName(data.to);
+    data.client_code = store.getters.clientCode;
     return request({
         baseUrl: 'base',
         url: '/message-board',
