@@ -30,7 +30,8 @@ class MessageBoardService extends BaseService
         $pageNo = isset($data['pageNo']) ? (int) $data['pageNo'] : 1;
         $pageSize = isset($data['pageSize']) ? (int) $data['pageSize'] : 10;
         $to = $data['to'] ?? false;
-        $isName = $data['isName'] ?? false;
+        $isName = $data['isName'] ?? 'false';
+        $isName = $isName === 'true';
         if (!$to) {
             $message = '请填写名称或暗语';
             $code = -1000;
@@ -63,7 +64,7 @@ class MessageBoardService extends BaseService
         unset($v);
 
         if (count($model) === 0 && $isName) {
-            // return $this->createForMock($data);
+            return $this->createForMock($data);
         }
         return [
             'list'       => $model,
