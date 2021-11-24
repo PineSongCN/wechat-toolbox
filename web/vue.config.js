@@ -11,6 +11,18 @@ const name = '念念不忘 必有回响';
 const port = process.env.port || process.env.npm_config_port || 6789; // dev port
 const BundleAnalyzerPlugin =
     require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
+const CompressionPlugin = require('compression-webpack-plugin');
+
+const configureWebpack = {
+    plugins: []
+};
+if (process.env.NODE_ENV === 'production') {
+    if (process.env.ANALYZ_ENV) {
+        // console.log('config.',config.plugins)
+        configureWebpack.plugins.push(new BundleAnalyzerPlugin());
+    }
+}
 module.exports = {
     publicPath: '/',
     outputDir: 'dist',
@@ -41,7 +53,18 @@ module.exports = {
                 '@': resolve('src')
             }
         },
-        // plugins: [new BundleAnalyzerPlugin()]
+        plugins: [
+            ...configureWebpack.plugins,
+            new CompressionPlugin({
+                algorithm: 'gzip', // 使用gzip压缩
+                test: /\.js$|\.html$|\.css$/, // 匹配文件名
+                filename: '[path][base].gz', // 压缩后的文件名(保持原文件名，后缀加.gz)
+                minRatio: 1, // 压缩率小于1才会压缩
+                threshold: 10240, // 对超过10k的数据压缩
+                deleteOriginalAssets: false, // 是否删除未压缩的源文件，谨慎设置，如果希望提供非gzip的资源，可不设置或者设置为false（比如删除打包后的gz后还可以加载到原始资源文件）
+                compressionOptions: { level: 9 }
+            })
+        ]
     },
     css: {
         loaderOptions: {
@@ -125,12 +148,5 @@ module.exports = {
             });
             config.optimization.runtimeChunk('single');
         });
-        // if (process.env.NODE_ENV === 'production') {
-        //     if (process.env.ANALYZ_ENV) {
-        //         // console.log('config.plugins',config.plugins)
-        //         config.plugins.analyze = new BundleAnalyzerPlugin()
-        //         // config.plugins.push(new BundleAnalyzerPlugin());
-        //     }
-        // }
     }
 };
