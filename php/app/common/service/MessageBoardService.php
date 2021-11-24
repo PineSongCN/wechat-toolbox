@@ -63,7 +63,7 @@ class MessageBoardService extends BaseService
         unset($v);
 
         if (count($model) === 0 && $isName) {
-            return $this->createForMock($data);
+            // return $this->createForMock($data);
         }
         return [
             'list'       => $model,
