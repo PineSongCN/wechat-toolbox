@@ -1,3 +1,4 @@
+import { v1 as uuidV1 } from 'uuid';
 import { login, logout, getInfo } from '@/api/user';
 import {
     getStorage,
@@ -6,15 +7,15 @@ import {
     clearStorage
 } from '@/utils/storage';
 import { validEmpty } from '@/utils/validate';
-import router, { resetRouter } from '@/router';
 
-const defMap = {
-    avatar: ''
-}
 const map = [
     {
         key: 'token',
         def: getStorage('token', '')
+    },
+    {
+        key: 'clientCode',
+        def: getStorage('clientCode', uuidV1())
     },
     {
         key: 'userId',
