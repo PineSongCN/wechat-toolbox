@@ -11,17 +11,17 @@ import store from './store';
 import router from './router';
 
 import './icons';
-import './permission'; 
+import './permission';
 
 import * as filters from './filters';
 
 import clipboard from '@/directive/focus.js';
 
-import Vant from 'vant';
-import 'vant/lib/index.css';
-import '@vant/touch-emulator';
+// import Vant from 'vant';
+// import 'vant/lib/index.css';
+// import '@vant/touch-emulator';
 
-Vue.use(Vant);
+// Vue.use(Vant);
 
 // Vue.use(Element, {
 //     size: 'mini'
@@ -34,14 +34,7 @@ Object.keys(filters).forEach((key) => {
 
 Vue.config.productionTip = false;
 
-
-import { 
-    Button,
-    Loading,
-    MessageBox,
-    Message,
-    Notification
-} from 'element-ui';
+import { Button, Loading, MessageBox, Message, Notification } from 'element-ui';
 Vue.prototype.$ELEMENT = { size: 'mini', zIndex: 1000 };
 
 Vue.use(Button);
@@ -53,6 +46,13 @@ Vue.prototype.$confirm = MessageBox.confirm;
 Vue.prototype.$prompt = MessageBox.prompt;
 Vue.prototype.$notify = Notification;
 Vue.prototype.$message = Message;
+
+import { Toast, Field, Loading as VantLoading, Notify } from 'vant';
+
+Vue.use(Toast);
+Vue.use(Field);
+Vue.use(VantLoading);
+Vue.use(Notify);
 
 new Vue({
     el: '#app',
