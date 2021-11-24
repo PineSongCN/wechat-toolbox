@@ -19,7 +19,7 @@ let baseUrl;
 //         };
 //         break;
 // }
-
+// console.log('process',process.env)
 baseUrl = {
     base: '/proxy-base'
 };

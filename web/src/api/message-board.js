@@ -2,7 +2,7 @@ import request from '@/api/_request';
 import store from '@/store';
 
 export function write(data = {}) {
-    data.clientCode = store.getters.clientCode;
+    data.client_code = store.getters.clientCode;
     return request({
         baseUrl: 'base',
         url: '/message-board',
