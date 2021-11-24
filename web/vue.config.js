@@ -41,7 +41,7 @@ module.exports = {
                 '@': resolve('src')
             }
         },
-        plugins: [new BundleAnalyzerPlugin()]
+        // plugins: [new BundleAnalyzerPlugin()]
     },
     css: {
         loaderOptions: {
