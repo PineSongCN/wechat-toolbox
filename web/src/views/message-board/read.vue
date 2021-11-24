@@ -109,11 +109,11 @@ export default {
                 confirmData.pageSize = 100;
                 const res = await read(confirmData);
                 this.$toast.success('念念不忘\n必有回响');
-                for (const k in this.data.message) {
-                    if (Object.hasOwnProperty.call(this.data.message, k)) {
-                        this.data.message[k] = '';
-                    }
-                }
+                // for (const k in this.data.message) {
+                //     if (Object.hasOwnProperty.call(this.data.message, k)) {
+                //         this.data.message[k] = '';
+                //     }
+                // }
                 this.data.list = this.formatList(res.list);
                 this.loading.submit = false;
             } catch (e) {
