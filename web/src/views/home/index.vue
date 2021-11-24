@@ -2,25 +2,33 @@
     <div class="page-home">
         <TheHead />
         <div class="main">
+            <router-link :to="{ name: 'MessageBoardRead' }" class="link">
+                <el-button class="button" type="primary" size="large">
+                    看留言
+                </el-button>
+            </router-link>
+            <router-link :to="{ name: 'MessageBoardWrite' }" class="link">
+                <el-button class="button" type="primary" size="large">
+                    写留言
+                </el-button>
+            </router-link>
         </div>
     </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import TheHead from '@/views/message-board/components/TheHead.vue';
 
 export default {
-    name: 'Home',
-    components: { },
+    name: 'MessageBoard',
+    components: { TheHead },
     data() {
-        return {
-        };
+        return {};
     },
-    computed: {
-    },
+    computed: {},
     created() {},
-    methods: {
-    }
+    methods: {}
 };
 </script>
 <style lang="scss">
@@ -50,9 +58,12 @@ export default {
         justify-content: center;
         align-items: center;
     }
-    .button {
-        width: 26rem;
-        +.button {
+
+    .link {
+        .button {
+            width: 60vw;
+        }
+        + .link {
             margin-left: 0;
             margin-top: 50px;
         }

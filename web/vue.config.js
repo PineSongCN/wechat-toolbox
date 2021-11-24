@@ -9,7 +9,8 @@ function resolve(dir) {
 const name = '念念不忘 必有回响';
 
 const port = process.env.port || process.env.npm_config_port || 6789; // dev port
-
+const BundleAnalyzerPlugin =
+    require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 module.exports = {
     publicPath: '/',
     outputDir: 'dist',
@@ -39,7 +40,8 @@ module.exports = {
             alias: {
                 '@': resolve('src')
             }
-        }
+        },
+        plugins: [new BundleAnalyzerPlugin()]
     },
     css: {
         loaderOptions: {
@@ -48,8 +50,8 @@ module.exports = {
                 lessOptions: {
                     modifyVars: {
                         // 直接覆盖变量
-                        'blue': '#f1b8af',
-                        '@blue': '#f1b8af',
+                        blue: '#f1b8af',
+                        '@blue': '#f1b8af'
                         // 或者可以通过 less 文件覆盖（文件路径为绝对路径）
                         // hack: `true; @import "your-less-file-path.less";`
                     }
@@ -123,5 +125,12 @@ module.exports = {
             });
             config.optimization.runtimeChunk('single');
         });
+        // if (process.env.NODE_ENV === 'production') {
+        //     if (process.env.ANALYZ_ENV) {
+        //         // console.log('config.plugins',config.plugins)
+        //         config.plugins.analyze = new BundleAnalyzerPlugin()
+        //         // config.plugins.push(new BundleAnalyzerPlugin());
+        //     }
+        // }
     }
 };
