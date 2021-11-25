@@ -3,7 +3,7 @@
         <TheHead />
         <div class="main">
             <van-field
-                v-model="data.message.to"
+                v-model="data.to"
                 label-width="60"
                 label="我的名字"
                 placeholder="请填写你的名字或暗号"
@@ -15,7 +15,7 @@
                 type="primary"
                 size="large"
                 :loading="loading.submit"
-                @click="confirmSubmit"
+                @click="doConfirm"
             >
                 查看留言
             </el-button>
@@ -27,22 +27,29 @@
                 <div class="label">不过没关系，你可以给TA留个言呀～</div>
             </div>
             <div v-else>
-                <div
-                    v-for="item in data.list"
-                    :key="item.message_board_id"
-                    class="row"
+                <van-list
+                    v-model="loading.submit"
+                    :finished="finished"
+                    finished-text="没有更多了"
+                    @load="confirmSubmit"
                 >
-                    <div class="user">
-                        <div class="user-box">
-                            <img :src="item.avatar" class="img" />
-                            <div class="label">{{ item.from }}</div>
+                    <div
+                        v-for="item in data.list"
+                        :key="item.message_board_id"
+                        class="row"
+                    >
+                        <div class="user">
+                            <div class="user-box">
+                                <img :src="item.avatar" class="img" />
+                                <div class="label">{{ item.from }}</div>
+                            </div>
+                            <div class="time">{{ item.createTimeFormat }}</div>
                         </div>
-                        <div class="time">{{ item.createTimeFormat }}</div>
+                        <div class="content">
+                            {{ item.content }}
+                        </div>
                     </div>
-                    <div class="content">
-                        {{ item.content }}
-                    </div>
-                </div>
+                </van-list>
             </div>
         </div>
         <TheFixed :value="data.fixed" />
@@ -61,11 +68,13 @@ export default {
     data() {
         return {
             data: {
+                to: '',
                 tip: {
                     to: '请填写你的名字或暗号'
                 },
                 message: {
-                    to: ''
+                    to: '',
+                    // endId: null,
                 },
                 list: null,
                 fixed: {
@@ -76,16 +85,27 @@ export default {
             loading: {
                 submit: false,
                 list: false
-            }
+            },
+            pageNo: 1,
+            finished: false
         };
     },
     computed: {},
     created() {},
     methods: {
+        doConfirm() {
+            if (this.data.to) {
+                this.data.message.to = this.data.to;
+                this.pageNo = 1;
+                this.confirmSubmit();
+            }
+        },
         async confirmSubmit() {
             try {
                 this.loading.submit = true;
-                const confirmData = { ...this.data.message };
+                const confirmData = {
+                    ...this.data.message
+                };
                 let error = null;
                 for (const k in confirmData) {
                     if (Object.hasOwnProperty.call(confirmData, k)) {
@@ -106,15 +126,25 @@ export default {
                     this.loading.submit = false;
                     return;
                 }
-                confirmData.pageSize = 100;
+                confirmData.pageNo = this.pageNo;
+                confirmData.pageSize = 10;
                 const res = await read(confirmData);
-                this.$toast.success('念念不忘\n必有回响');
+                if (this.pageNo == 1) {
+                    this.$toast.success('念念不忘\n必有回响');
+                }
                 // for (const k in this.data.message) {
                 //     if (Object.hasOwnProperty.call(this.data.message, k)) {
                 //         this.data.message[k] = '';
                 //     }
                 // }
-                this.data.list = this.formatList(res.list);
+                const dataList = this.pageNo > 1 ? this.data.list : [];
+                const list = this.formatList(res.list);
+                this.data.list = [...dataList, ...list];
+                if (this.pageNo < res.totalPage) {
+                    this.pageNo++;
+                } else if (this.pageNo >= res.totalPage) {
+                    this.finished = true;
+                }
                 this.loading.submit = false;
             } catch (e) {
                 console.log('confirmSubmit:e', e);

@@ -47,12 +47,13 @@ Vue.prototype.$prompt = MessageBox.prompt;
 Vue.prototype.$notify = Notification;
 Vue.prototype.$message = Message;
 
-import { Toast, Field, Loading as VantLoading, Notify } from 'vant';
+import { Toast, Field, Loading as VantLoading, Notify, List } from 'vant';
 
 Vue.use(Toast);
 Vue.use(Field);
 Vue.use(VantLoading);
 Vue.use(Notify);
+Vue.use(List);
 
 new Vue({
     el: '#app',
