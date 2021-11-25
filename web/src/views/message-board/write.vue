@@ -17,7 +17,7 @@
                 autosize
                 label="留言内容"
                 type="textarea"
-                maxlength="512"
+                maxlength="521"
                 placeholder="请填写留言内容"
                 show-word-limit
                 clearable
