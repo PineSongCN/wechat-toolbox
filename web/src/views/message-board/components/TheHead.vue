@@ -29,6 +29,7 @@ export default {
         display: block;
         border-radius: 50%;
         margin-right: 35px;
+        opacity: 0.5;
     }
 }
 </style>
