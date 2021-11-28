@@ -34,10 +34,18 @@ Object.keys(filters).forEach((key) => {
 
 Vue.config.productionTip = false;
 
-import { Button, Loading, MessageBox, Message, Notification } from 'element-ui';
+import {
+    Button,
+    Loading,
+    MessageBox,
+    Message,
+    Notification,
+    Switch
+} from 'element-ui';
 Vue.prototype.$ELEMENT = { size: 'mini', zIndex: 1000 };
 
 Vue.use(Button);
+Vue.use(Switch);
 Vue.use(Loading.directive);
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$msgbox = MessageBox;
@@ -47,13 +55,21 @@ Vue.prototype.$prompt = MessageBox.prompt;
 Vue.prototype.$notify = Notification;
 Vue.prototype.$message = Message;
 
-import { Toast, Field, Loading as VantLoading, Notify, List } from 'vant';
+import {
+    Toast,
+    Field,
+    Loading as VantLoading,
+    Notify,
+    List,
+    Dialog as VantDialog
+} from 'vant';
 
 Vue.use(Toast);
 Vue.use(Field);
 Vue.use(VantLoading);
 Vue.use(Notify);
 Vue.use(List);
+Vue.use(VantDialog);
 
 new Vue({
     el: '#app',

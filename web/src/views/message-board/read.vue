@@ -21,7 +21,19 @@
             </el-button>
         </div>
         <div v-if="data.list" class="main">
-            <div class="title">给你的留言</div>
+            <div class="title">
+                <span>给你的留言</span>
+                <div v-if="data.list.length > 0">
+                    <el-switch
+                        v-if="showMultiavatar"
+                        v-model="multiavatar"
+                        size="mini"
+                        @touchstart.native="touchstart"
+                        @touchend.native="touchend"
+                        @change="switchMultiavatar"
+                    />
+                </div>
+            </div>
             <div v-if="data.list.length === 0" class="empty">
                 <div class="label">暂时还没有人给你留言哦～</div>
                 <div class="label">不过没关系，你可以给TA留个言呀～</div>
@@ -40,7 +52,7 @@
                     >
                         <div class="user">
                             <div class="user-box">
-                                <img :src="item.avatar" class="img" />
+                                <img :src="Avatar(item)" class="img" />
                                 <div class="label">{{ item.from }}</div>
                             </div>
                             <div class="time">{{ item.createTimeFormat }}</div>
@@ -62,10 +74,14 @@ import TheHead from './components/TheHead.vue';
 import TheFixed from './components/TheFixed.vue';
 import { read } from '@/api/message-board';
 import { parseTime } from '@/utils';
+import { getStorage, setStorage } from '@/utils/storage';
+// https://api.multiavatar.com/null.png
 export default {
     name: 'MessageBoardread',
     components: { TheHead, TheFixed },
     data() {
+        const multiavatar = getStorage('multiavatar', false);
+        const showMultiavatar = getStorage('showMultiavatar', true);
         return {
             data: {
                 to: '',
@@ -73,7 +89,7 @@ export default {
                     to: '请填写你的名字或暗号'
                 },
                 message: {
-                    to: '',
+                    to: ''
                     // endId: null,
                 },
                 list: null,
@@ -87,12 +103,47 @@ export default {
                 list: false
             },
             pageNo: 1,
-            finished: false
+            finished: false,
+            multiavatar,
+            showMultiavatar,
+            touchTime: 0
         };
     },
-    computed: {},
+    computed: {
+        Avatar() {
+            return ({ avatar, create_time, client_code }) => {
+                const CODE = client_code ? client_code : create_time;
+                return this.multiavatar
+                    ? `https://api.multiavatar.com/${CODE}.png`
+                    : avatar;
+            };
+        }
+    },
     created() {},
     methods: {
+        switchMultiavatar(e) {
+            setStorage('multiavatar', e);
+        },
+        touchstart() {
+            this.touchTime = Date.now();
+        },
+        async touchend() {
+            console.log(
+                'Date.now() - this.touchTime',
+                Date.now() - this.touchTime
+            );
+            try {
+                if (Date.now() - this.touchTime > 1000) {
+                    await this.$dialog.confirm({
+                        message: '是否关闭并隐藏该按钮？'
+                    });
+                    this.multiavatar = false;
+                    this.showMultiavatar = false;
+                    setStorage('multiavatar', false);
+                    setStorage('showMultiavatar', false);
+                }
+            } catch (e) {}
+        },
         doConfirm() {
             if (this.data.to) {
                 this.data.message.to = this.data.to;
@@ -207,6 +258,9 @@ export default {
             border-bottom: 1px solid #f1b8af;
             padding-bottom: 10px;
             margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .empty {
             .label {
