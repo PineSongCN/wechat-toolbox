@@ -105,7 +105,7 @@ export default {
             pageNo: 1,
             finished: false,
             multiavatar,
-            showMultiavatar,
+            showMultiavatar: false,
             touchTime: 0
         };
     },
