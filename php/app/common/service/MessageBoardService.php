@@ -15,6 +15,7 @@ class MessageBoardService extends BaseService
      * @param Message $model
      */
     public $model;
+    public $blacklist = ['758284920'];
 
     public function __construct()
     {
@@ -56,7 +57,7 @@ class MessageBoardService extends BaseService
             ->order($order)
             ->limit($pageSize)
             ->page($pageNo)
-            ->field(['mb.message_board_id', 'mb.client_code', 'mb.from', 'mb.to', 'mb.content', 'mb.create_time'])
+            ->field(['mb.message_board_id', 'mb.from', 'mb.to', 'mb.content', 'mb.create_time'])
             ->select()
             ->toArray();
         foreach ($model as &$v) {
@@ -104,8 +105,17 @@ class MessageBoardService extends BaseService
         Db::startTrans();
 
         try {
-            $model = MessageBoard::create($data);
-            $model = $model === null ? false : $model->toArray();
+            $content = $data['content'] ?? '';
+            if (empty($content)) {
+                throw new \think\Exception('留言不能为空', -1000);
+            }
+            $isBlack = $this->filter($content);
+            if ($isBlack) {
+                $model = [null];
+            } else {
+                $model = MessageBoard::create($data);
+                $model = $model === null ? false : $model->toArray();
+            }
             Db::commit();
             return $model;
         } catch (\Exception $e) {
@@ -113,6 +123,29 @@ class MessageBoardService extends BaseService
             $code = $e->getCode() ? $e->getCode() : -1000;
             throw new \think\Exception($e->getMessage(), $code);
         }
+    }
+    public function filter(String $string)
+    {
+        $list = $this->blacklist;
+        $count = 0; //违规词的个数
+        $sensitiveWord = '';  //违规词
+        $stringAfter = $string;  //替换后的内容
+        $pattern = "/" . implode("|", $list) . "/i"; //定义正则表达式
+        if (preg_match_all($pattern, $string, $matches)) { //匹配到了结果
+            $patternList = $matches[0];  //匹配到的数组
+            $count = count($patternList);
+            // $sensitiveWord = implode(',', $patternList); //敏感词数组转字符串
+            // $replaceArray = array_combine($patternList, array_fill(0, count($patternList), '*')); //把匹配到的数组进行合并，替换使用
+            // $stringAfter = strtr($string, $replaceArray); //结果替换
+        }
+        // $log = "原句为 [ {$string} ]<br/>";
+        // if ($count == 0) {
+        //     $log .= "暂未匹配到敏感词！";
+        // } else {
+        //     $log .= "匹配到 [ {$count} ]个敏感词：[ {$sensitiveWord} ]<br/>" .
+        //         "替换后为：[ {$stringAfter} ]";
+        // }
+        return $count > 0;
     }
     public function createForMock(array $data)
     {
@@ -122,7 +155,7 @@ class MessageBoardService extends BaseService
             $data['type'] = 'mock';
             $data['content'] = $this->getMockData();
             $data['isName'] = false;
-            $data['create_time'] = time() - mt_rand(600,7200);
+            $data['create_time'] = time() - mt_rand(600, 7200);
             $model = MessageBoard::create($data);
             Db::commit();
             return $this->list($data);

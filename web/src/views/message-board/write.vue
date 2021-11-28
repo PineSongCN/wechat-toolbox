@@ -93,11 +93,12 @@ export default {
                 }
                 const res = await write(confirmData);
                 this.$toast.success('念念不忘\n必有回响');
-                for (const k in this.data.message) {
-                    if (Object.hasOwnProperty.call(this.data.message, k)) {
-                        this.data.message[k] = '';
-                    }
-                }
+                // for (const k in this.data.message) {
+                //     if (Object.hasOwnProperty.call(this.data.message, k)) {
+                //         this.data.message[k] = '';
+                //     }
+                // }
+                this.data.message.content = '';
                 this.loading.submit = false;
             } catch (e) {
                 console.log('confirmSubmit:e', e);
