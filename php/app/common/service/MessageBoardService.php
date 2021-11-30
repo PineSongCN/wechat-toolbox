@@ -15,7 +15,21 @@ class MessageBoardService extends BaseService
      * @param Message $model
      */
     public $model;
-    public $blacklist = ['758284920'];
+    public $blacklist = [
+        'client_code' => [
+            '162dde30-4def-11ec-8592-8b73a51b8bca',
+            'b5608f00-4cf7-11ec-8a5f-d16b6b172f5b',
+            '5b9f9fb0-4e0a-11ec-83f3-2fa50ee69fed',
+            'b0f63310-4e83-11ec-807a-3d8a44e8c461',
+            'ef6fde70-4ea1-11ec-bcc3-bdf46f18a618',
+            '19467bb0-4ea6-11ec-8926-fdc7c2436054',
+            '6d05b130-5117-11ec-b8de-1b97b4fd5a2f',
+            '3596f920-5121-11ec-9daf-c3284d857909',
+            '5b9f9fb0-4e0a-11ec-83f3-2fa50ee69fed',
+            // 'b48a2500-4f90-11ec-b72d-e1c0cd49270f',
+        ],
+        'content' => ['758284920'],
+    ];
 
     public function __construct()
     {
@@ -105,11 +119,12 @@ class MessageBoardService extends BaseService
         Db::startTrans();
 
         try {
+            $client_code = $data['client_code'] ?? '';
             $content = $data['content'] ?? '';
             if (empty($content)) {
                 throw new \think\Exception('留言不能为空', -1000);
             }
-            $isBlack = $this->filter($content);
+            $isBlack = $this->filter($client_code, $content);
             if ($isBlack) {
                 $model = [null];
             } else {
@@ -124,9 +139,14 @@ class MessageBoardService extends BaseService
             throw new \think\Exception($e->getMessage(), $code);
         }
     }
-    public function filter(String $string)
+    public function filter(String $client_code, String $string)
     {
-        $list = $this->blacklist;
+        $isBlack = array_search($client_code, $this->blacklist['client_code']);
+        if ($isBlack !== false) {
+            return true;
+        }
+        // return [array_search($client_code, $this->blacklist['client_code']), $client_code, $this->blacklist['client_code']];
+        $list = $this->blacklist['content'];
         $count = 0; //违规词的个数
         $sensitiveWord = '';  //违规词
         $stringAfter = $string;  //替换后的内容
