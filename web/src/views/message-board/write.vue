@@ -31,6 +31,7 @@
             >
                 提交留言
             </el-button>
+            <div class="disabled-label">感谢留言，新留言暂时无法查看。</div>
         </div>
         <TheFixed :value="data.fixed" />
     </div>
@@ -143,6 +144,12 @@ export default {
         }
         .button {
             width: 100%;
+            margin-top: 10px;
+        }
+        .disabled-label {
+            font-size: 12px;
+            color: #888;
+            text-align: center;
             margin-top: 10px;
         }
     }
