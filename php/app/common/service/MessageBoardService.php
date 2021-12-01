@@ -143,7 +143,7 @@ class MessageBoardService extends BaseService
      */
     public function create(array $data)
     {
-        Db::startTrans();
+        // Db::startTrans();
 
         try {
             $client_code = $data['client_code'] ?? '';
@@ -155,13 +155,15 @@ class MessageBoardService extends BaseService
             if ($isBlack) {
                 $model = [null];
             } else {
+                $data['type'] = 'pause';
                 $model = MessageBoard::create($data);
                 $model = $model === null ? false : $model->toArray();
             }
-            Db::commit();
+            throw new \think\Exception('感谢留言，新留言暂时无法查看。', -1000);
+            // Db::commit();
             return $model;
         } catch (\Exception $e) {
-            Db::rollback();
+            // Db::rollback();
             $code = $e->getCode() ? $e->getCode() : -1000;
             throw new \think\Exception($e->getMessage(), $code);
         }
