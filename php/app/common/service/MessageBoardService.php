@@ -30,7 +30,7 @@ class MessageBoardService extends BaseService
             '95b16e90-5111-11ec-8c20-dd624379a879',
             '88ab1f60-5112-11ec-afb6-4923f44d9fee',
             'f7b3e410-4e73-11ec-b35c-470150e870b6',
-            // '',
+            'baee6910-505d-11ec-844d-c33705fe9c2f',
             // '',
             // '',
             // '',
