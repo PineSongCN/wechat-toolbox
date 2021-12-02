@@ -104,6 +104,7 @@ export default {
             } catch (e) {
                 console.log('confirmSubmit:e', e);
                 this.loading.submit = false;
+                this.data.message.content = '';
             }
         }
     }
