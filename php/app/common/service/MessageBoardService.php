@@ -72,6 +72,7 @@ class MessageBoardService extends BaseService
         $pageNo = isset($data['pageNo']) ? (int) $data['pageNo'] : 1;
         $pageSize = isset($data['pageSize']) ? (int) $data['pageSize'] : 10;
         $to = $data['to'] ?? false;
+        $client_code = $data['client_code'] ?? false;
         $isName = $data['isName'] ?? 'false';
         $isName = $isName === 'true';
         if (!$to) {
@@ -84,8 +85,9 @@ class MessageBoardService extends BaseService
             'mb.create_time' => 'desc'
         ];
         $where = [
+            ['mb.client_code', '=', $data['client_code']],
             ['mb.to', '=', trim($data['to'])],
-            ['mb.type', '=', 'normal'],
+            ['mb.type', 'in', ['normal', 'pause']],
         ];
 
         $total = $this->model
@@ -159,7 +161,7 @@ class MessageBoardService extends BaseService
                 $model = MessageBoard::create($data);
                 $model = $model === null ? false : $model->toArray();
             }
-            throw new \think\Exception('感谢留言，新留言暂时无法查看。', -1000);
+            throw new \think\Exception('感谢留言，暂时只能自己查看。', -1000);
             // Db::commit();
             return $model;
         } catch (\Exception $e) {

@@ -31,7 +31,7 @@
             >
                 提交留言
             </el-button>
-            <div class="disabled-label">感谢留言，新留言暂时无法查看。</div>
+            <div class="disabled-label">感谢留言，暂时只能自己查看。</div>
         </div>
         <TheFixed :value="data.fixed" />
     </div>
