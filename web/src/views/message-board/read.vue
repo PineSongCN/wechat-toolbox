@@ -39,8 +39,12 @@
                 <div class="label">不过没关系，你可以给TA留个言呀～</div>
             </div>
             <div v-else>
-                
-                <div v-if="data.message.to === '山楂岛'" class="shanzhadao"><a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzIzNTg3ODEwOA==&scene=124#wechat_redirect"><el-button>山楂岛公众号（点击跳转）</el-button></a></div>
+                <div v-if="data.message.to === '山楂岛'" class="shanzhadao">
+                    <a
+                        href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzIzNTg3ODEwOA==&scene=124#wechat_redirect"
+                        ><el-button>山楂岛公众号（点击跳转）</el-button></a
+                    >
+                </div>
                 <van-list
                     v-model="loading.submit"
                     :finished="finished"
@@ -206,10 +210,18 @@ export default {
         },
         formatList(list) {
             const temp = [];
+            const unRepeat = {};
             for (const t of list) {
                 const v = { ...t };
-                v.createTimeFormat = parseTime(v.create_time);
-                temp.push(v);
+                const { client_code, content } = v;
+                if (!unRepeat[client_code]) {
+                    unRepeat[client_code] = [];
+                }
+                if (!unRepeat[client_code].includes(content)) {
+                    unRepeat[client_code].push(content)
+                    v.createTimeFormat = parseTime(v.create_time);
+                    temp.push(v);
+                }
             }
             return temp;
         }
@@ -232,8 +244,8 @@ export default {
     padding: 15px;
     position: relative;
     .shanzhadao {
-        display:flex;
-        justify-content:center;
+        display: flex;
+        justify-content: center;
     }
     .main {
         width: 100%;
