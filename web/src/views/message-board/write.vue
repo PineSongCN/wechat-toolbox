@@ -5,8 +5,8 @@
             <van-field
                 v-model="data.message.to"
                 label-width="60"
-                label="好友名字"
-                placeholder="请填写好友名字或暗号"
+                label="TA的名字"
+                placeholder="请填写TA的名字或暗号"
                 clearable
                 autofocus
             />
@@ -31,7 +31,7 @@
             >
                 提交留言
             </el-button>
-            <div class="disabled-label">感谢留言，暂时只能自己查看。</div>
+            <div v-if="false" class="disabled-label">感谢留言，暂时只能自己查看。</div>
         </div>
         <TheFixed :value="data.fixed" />
     </div>
@@ -49,7 +49,7 @@ export default {
         return {
             data: {
                 tip: {
-                    to: '请填写好友名字或暗号',
+                    to: '请填写TA的名字或暗号',
                     content: '请填写留言内容'
                 },
                 message: {

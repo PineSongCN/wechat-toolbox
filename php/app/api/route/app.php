@@ -20,6 +20,16 @@ Route::group('/message-board', function () {
     Route::post('/', 'MessageBoard/create');
 })->allowCrossDomain();
 
+Route::group('/statistics', function () {
+    Route::get('/', 'Statistics/list');
+    Route::post('/', 'Statistics/create');
+})->allowCrossDomain();
+
+Route::group('/event', function () {
+    Route::get('/', 'Event/list');
+    Route::post('/', 'Event/create');
+})->allowCrossDomain();
+
 Route::miss(function () {
     return json([
         'code' => 404,

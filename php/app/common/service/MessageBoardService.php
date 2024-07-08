@@ -89,7 +89,7 @@ class MessageBoardService extends BaseService
             'mb.create_time' => 'desc'
         ];
         $where = [
-            ['mb.client_code', '=', $data['client_code']],
+            //['mb.client_code', '=', $data['client_code']],
             ['mb.to', '=', trim($data['to'])],
             ['mb.type', 'in', ['normal', 'pause']],
         ];
